@@ -10,6 +10,21 @@ resource "aws_eks_cluster" "main" {
 
 }
 
+resource "aws_eks_node_group" "main" {
+  cluster_name = aws_eks_cluster.main.name
+  node_group_name = var.project_name
+  node_role_arn = aws_iam_role.node_group.arn
+  subnet_ids = module.network.private_subnet_id
+  instance_types = ["t3.medium"]
+  scaling_config {
+    desired_size = 1
+    max_size = 2
+    min_size = 1
+  }
+
+}
+
+
 output "endpoint" {
     value = aws_eks_cluster.main.endpoint
 }

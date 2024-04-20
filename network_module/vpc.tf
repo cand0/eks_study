@@ -13,6 +13,15 @@ resource "aws_internet_gateway" "cand0" {
       Name = var.project_name
     }
 }
+resource "aws_nat_gateway" "cand0" {
+  subnet_id = aws_subnet.public[0].id
+  allocation_id = aws_eip.NAT.id
+  tags = {
+      Name = var.project_name
+  }
+}
+resource "aws_eip" "NAT" {  
+}
 
 
 resource "aws_subnet" "public" {
